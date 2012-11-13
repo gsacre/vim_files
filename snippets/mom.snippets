@@ -1,0 +1,26 @@
+snippet start
+	PROJECT : ${1:Project}
+	SUBJECT : ${2:Subject}
+	DATE    : `strftime("%d/%m/%Y %H:%M")`
+	LOCATION: ${3:Conference call}
+	PRESENT : ${4:Gregory}
+	ABSENT  : ${5}
+	_______________________________________________________________________________
+
+	AGENDA
+
+	${6:1. Introduction}
+
+	_______________________________________________________________________________
+
+	${7}
+
+	_______________________________________________________________________________
+
+	ACTION POINTS SUMMARY
+
+snippet ap
+	[AP: ${1:Actionee}] ${2:Description}
+
+snippet dt
+	`strftime("%d/%m/%Y %H:%M")`
