@@ -79,6 +79,7 @@ au BufWinEnter,BufRead,BufNew,BufNewFile *.rdb set formatoptions=awtq
 
 au BufWinEnter,BufRead,BufNew,BufNewFile *.note set ft=note
 au BufWinEnter,BufRead,BufNew,BufNewFile *.mom set ft=mom
+au BufWinEnter,BufRead,BufNew,BufNewFile project_info* set ft=prjtmpl
 
 au BufWinLeave *.* mkview
 au BufWinEnter *.* silent loadview
