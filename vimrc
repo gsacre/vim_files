@@ -214,4 +214,4 @@ abbreviate N: NOTE:
 abbreviate eoi [end-of-item]
 
 " Notes.vim
-let g:notes_directory = '/home/gsacre/SpiderOak/notes'
+"let g:notes_directory = '/home/gsacre/SpiderOak/notes'

@@ -12,15 +12,18 @@ endif
 syn match object        "OBJECT\ *:"
 syn match date          "DATE\ *:"
 syn match project       "PROJECT\ *:"
+syn match title         "\n^[A-Z\ \.]\+\n"
 
 hi Function gui=bold
 hi Constant gui=bold
 hi Keyword gui=bold
 hi Number gui=underline
+hi String guifg=#ffffff gui=bold
 
 hi def link object            Keyword
 hi def link date              Function
 hi def link project           Constant
+hi def link title             String
 hi! link Folded Comment
 
 set textwidth=72
