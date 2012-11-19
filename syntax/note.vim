@@ -12,7 +12,7 @@ endif
 syn match object        "OBJECT\ *:"
 syn match date          "DATE\ *:"
 syn match project       "PROJECT\ *:"
-syn match title         "\n^[A-Z\ \.]\+\n"
+syn match title         "\n^[A-Z\ \.0-9]\+\n"
 
 syn region file start="^\[" end="\]"
 
