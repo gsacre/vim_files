@@ -17,6 +17,7 @@ syn match present       "PRESENT :"
 syn match absent        "ABSENT  :"
 syn match apsummary     "ACTION POINTS SUMMARY"
 syn match agenda        "AGENDA"
+syn match title         "\n^[A-Z\ \.]\+\n"
 
 syn region ap start="\[AP:\ " end="\]"
 
@@ -36,6 +37,7 @@ hi def link project           Function
 hi def link absent            String
 hi def link apsummary         String
 hi def link agenda            String
+hi def link title             String
 hi! link Folded Comment
 
 set textwidth=72

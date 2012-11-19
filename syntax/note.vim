@@ -14,6 +14,8 @@ syn match date          "DATE\ *:"
 syn match project       "PROJECT\ *:"
 syn match title         "\n^[A-Z\ \.]\+\n"
 
+syn region file start="^\[" end="\]"
+
 hi Function gui=bold
 hi Constant gui=bold
 hi Keyword gui=bold
@@ -24,6 +26,7 @@ hi def link object            Keyword
 hi def link date              Function
 hi def link project           Constant
 hi def link title             String
+hi file guifg=#ffffff  gui=underline
 hi! link Folded Comment
 
 set textwidth=72
