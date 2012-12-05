@@ -17,7 +17,7 @@ syn match present       "PRESENT :"
 syn match absent        "ABSENT  :"
 syn match apsummary     "ACTION POINTS SUMMARY"
 syn match agenda        "AGENDA"
-syn match title         "\n^[A-Z\ \.0-9]\+\n"
+syn match title         "\n^[A-Z\ \.\?,0-9]\+\n"
 
 syn region ap start="\[AP:\ " end="\]"
 
