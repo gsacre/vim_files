@@ -60,6 +60,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 autocmd FileType perl so $HOME/.vim/abb/perl.vim
 "autocmd FileType c so $HOME/.vim/abb/c.vim
 autocmd FileType python set textwidth=0
+autocmd FileType python set formatoptions=
 
 " We save and load the fold views
 set foldmethod=indent
@@ -97,8 +98,8 @@ if has("gui_running")
         set guioptions-=T
         set guioptions-=m
         set guioptions-=r
-        "set guifont=DejaVu\ Sans\ Mono\ 9
-        set guifont=PragmataPro\ 10
+        "set guifont=DejaVu\ Sans\ Mono\ 10
+        set guifont=PragmataPro\ 12
         set wrap
 	set lines=40
 	set columns=80
