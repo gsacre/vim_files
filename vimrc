@@ -1,15 +1,18 @@
-syntax on
-setlocal spell spelllang=en_gb
-set nospell
+" vim: fdm=marker foldenable sw=4 ts=4 sts=4
+" some credits go to: https://github.com/mcantor/dotfiles/blob/master/vim/.vimrc
 set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+
+" {{{ BASIC SETTINGS
 set backspace=indent,eol,start
 set backupdir=~/backup/
-set history=50
+set undodir=~/undodir/
+set viewdir=~/.vim/view/
+set history=500
 set showcmd
 set incsearch
 set tabstop=8
 set shiftwidth=8
-set expandtab
 "set foldcolumn=2
 set ruler
 set cindent
@@ -22,35 +25,62 @@ set showmatch
 set hlsearch
 set autochdir
 set wrap
+set cul
 
-" setting par as the paragraph formatting tool -- using gqip
-"set formatprg=par\ 72
+" Displays the lines based on the current highlighted line.
+" Really useful to know how many lines to copy or delete from.
+set relativenumber
+"set foldmethod=indent
+"set viewoptions=folds,cursor
 
-"set background=light
-let $MYVIMRC="~/.vimrc"
+" I don't want to have all the *bars
+set guioptions-=T "toolbar
+set guioptions-=m "menubar
+set guioptions-=r "rulerbar
 
-nnoremap <silent> <F5> :TaskList<CR>
-nnoremap <silent> <F6> :Project<CR>
-nnoremap <silent> <F7> :set mouse=a<CR>
-nnoremap <silent> <F8> :set mouse=""<CR>
-nnoremap <silent> <F9> :TlistToggle<CR>
-noremap <F11> :call WrapAt()<Left>
-nnoremap <silent> <F12> :Explore<CR>
-nnoremap <silent> <C-Tab> :bn<CR>
-nnoremap <silent> <C-s-Tab> :bp<CR>
+" Set the font if I can
+set guifont=Consolas:h12
 
-inoremap <expr> <C-Space> pumvisible() \|\| &omnifunc == '' ?
-\ "\<lt>C-n>" :
-\ "\<lt>C-x>\<lt>C-o><c-r>=pumvisible() ?" .
-\ "\"\\<lt>c-n>\\<lt>c-p>\\<lt>c-n>\" :" .
-\ "\" \\<lt>bs>\\<lt>C-n>\"\<CR>"
-imap <C-@> <C-Space>
+" To have an easier to read document
+set linespace=8
 
-" To search and replace the word under the cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+" Initial window display
+set lines=30
+set columns=90
 
-colorscheme gsac
-"colorscheme less-tmux
+" To get all the nice little characters displayed
+set fileencodings=utf-8
+
+" For clever completion with the :find command
+set path+=**
+
+" Window display
+set showcmd ruler laststatus=2
+
+" Splits
+set splitright
+
+" Session saving
+set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
+
+" Status line
+set statusline=%!MyStatusLine()
+
+colorscheme lucario
+
+" }}}
+
+" {{{ VARIABLES
+let $MYVIMRC="~/_vimrc"
+let $SNIPPETS="C:/Users/gsa/Downloads/gVimPortable/Data/settings/.vim/plugged/vim-snippets/snippets"
+" }}}
+
+" {{{ AUTOCOMMANDS
+" Make the modification indicator [+] white on red background
+au ColorScheme * hi User1 gui=bold term=bold cterm=bold guifg=white guibg=red ctermfg=white ctermbg=red
+
+" Tweak the color of the fold display column
+au ColorScheme * hi FoldColumn cterm=bold ctermbg=233 ctermfg=146
 
 autocmd BufWritePre COMMIT_EDITMSG :call WrapAt(72)
 " autocmd BufWritePre *.rdb :call WrapAt(72)
@@ -63,8 +93,6 @@ autocmd FileType python set textwidth=0
 autocmd FileType python set formatoptions=
 
 " We save and load the fold views
-set foldmethod=indent
-set viewoptions=folds,cursor
 au BufWinEnter,BufRead,BufNew,BufNewFile mutt-* set textwidth=72
 au BufWinEnter,BufRead,BufNew,BufNewFile *.txt set textwidth=72
 au BufWinEnter,BufRead,BufNew,BufNewFile *.vorg set textwidth=72
@@ -93,126 +121,173 @@ au BufWinEnter COMMIT_EDITMSG  setlocal nocindent
 au BufRead,BufNewFile *.tjp setfiletype tjp
 au BufRead,BufNewFile *.tji setfiletype tjp
 
-if has("gui_running")
-        set cul
-        set guioptions-=T
-        set guioptions-=m
-        set guioptions-=r
-        "set guifont=DejaVu\ Sans\ Mono\ 10
-        set guifont=PragmataPro\ 12
-        set wrap
-	set lines=40
-	set columns=80
-        "set foldcolumn=2
-        set foldmethod=syntax
-	colorscheme wombat
-	nnoremap <2-LeftMouse> :Utl ol<cr>
-        nnoremap <silent> <C-Tab> :tabn<CR>
-        nnoremap <silent> <C-s-Tab> :tabp<CR>
-endif
+autocmd BufNewFile,BufRead *.csv setf csv
+autocmd BufNewFile,BufRead *.tsv setf csv
+autocmd BufNewFile,BufRead *.tsv Delimiter \t
+autocmd BufNewFile,BufRead *.tsv setlocal ts=20 sw=25
+
+" Change the status line based on the insert mode type
+au InsertEnter * call InsertStatuslineColor(v:insertmode)
+au InsertChange * call InsertStatuslineColor(v:insertmode)
+au InsertLeave * hi statusline guibg=#66747f
+" }}}
+
+" {{{ KEY MAPPINS
+noremap <F11> :call WrapAt()<Left>
+nnoremap <silent> <C-Tab> :bn<CR>
+nnoremap <silent> <C-s-Tab> :bp<CR>
+" To search and replace the word under the cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+
+"Regular expression magic mode
+nnoremap / /\v
+vnoremap / /\v
+cnoremap %s/ %smagic/
+cnoremap \>s/ \>smagic/
+nnoremap :g/ :g/\v
+nnoremap :g// :g//
+
+" Easy quickfix navigation
+nnoremap <C-n> :cn<CR>
+nnoremap <C-p> :cp<CR>
+
+" camelCase => camel_case
+vnoremap ,case :s/\v\C(([a-z]+)([A-Z]))/\2_\l\3/g<CR>
+
+" Session mappings
+nnoremap ,s :mksession! Session.vim<CR>
+
+" Sane pasting
+command! Paste call SmartPaste()
+" }}}
+
+" {{{ PLUGINS
+call plug#begin('~/.vim/plugged')
+
+Plug 'tpope/vim-surround'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-commentary'
+Plug 'marcweber/vim-addon-mw-utils'
+Plug 'honza/vim-snippets'
+Plug 'kalafut/vim-taskjuggler'
+Plug 'garbas/vim-snipmate'
+Plug 'dsummersl/wikia-csv'
+"Plug 'itchyny/lightline.vim'
+
+" {{{ NERDTree
+"     ========
+
+Plug 'scrooloose/nerdtree'
+
+" OPTIONS:
+
+" Get rid of objects in C projects
+let NERDTreeIgnore=['\~$', '.o$', 'bower_components', 'node_modules', '__pycache__']
+let NERDTreeWinSize=20
+
+" }}}
+
+" {{{ netrw: Configuration
+"     ====================
+
+let g:netrw_banner=0        " disable banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+" hide gitignore'd files
+let g:netrw_list_hide=netrw_gitignore#Hide()
+" hide dotfiles by default (this is the string toggled by netrw-gh)
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+" }}}
+
+call plug#end()
+" }}}
+
+" {{{ FUNCTIONS
+set diffexpr=MyDiff()
+function MyDiff()
+	let opt = '-a --binary '
+	if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+	if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+	let arg1 = v:fname_in
+	if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+	let arg2 = v:fname_new
+	if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+	let arg3 = v:fname_out
+	if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+	let eq = ''
+	if $VIMRUNTIME =~ ' '
+		if &sh =~ '\<cmd'
+			let cmd = '""' . $VIMRUNTIME . '\diff"'
+			let eq = '"'
+		else
+			let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+		endif
+	else
+		let cmd = $VIMRUNTIME . '\diff'
+	endif
+	silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
 
 func! WrapAt(num1)
-        exe "set textwidth=" . a:num1
-        set wrap
-        set nocp
-        let tmp = line("$")
-        normal gg
-        for i in range (1, tmp)
-                normal gqq
-                normal +
-        endfor
+	exe "set textwidth=" . a:num1
+	set wrap
+	set nocp
+	let tmp = line("$")
+	normal gg
+	for i in range (1, tmp)
+		normal gqq
+		normal +
+	endfor
 endfunc
 
-" for latex-suite
-filetype plugin indent on
-set grepprg=grep\ -nH\ $*
-set iskeyword+=:
-let g:tex_flavor = "latex"
-set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after
-"augroup MyIMAPS
-""        au!
-"        au VimEnter *.tex source ~/.vim/after/ftplugin/tex.vim
-"augroup END
+" Function that takes the S-Clinica XML file and turns is into a human
+" readable document.
+func! SClinicaConfDoc()
+	exe '%s/&lt;/</ge|%s/&gt;/>/ge|%s/<KeyValueOfstringstring><Key>//ge|%s/<\/Key><Value>/: /ge|%s/<\/Value><\/KeyValueOfstringstring>/\r/ge|%s/<\/Key><Value\/><\/KeyValueOfstringstring>/: \r/ge|%s/<\/KeyValueOfstringstring>//ge|%s/&amp;#13;&amp;#10;/\r/ge|%s/&amp;#xD;//ge|%s/<MaskPath>/Mask: /ge|%s/<\/MaskPath>//ge|%s/\v\<GenericClass[ [:alnum:]=":/._-]+\>//ge|%s/\v\<Object.+Value\>Not//ge|%s/\v\<\/Arr.+$//ge'
+endfunc
+command! SClinicaConfDoc call SClinicaConfDoc()
 
-" for writing mails with correct accents in Mutt
-"set encoding&           " terminal charset: follows current locale
-"set termencoding=
-"set fileencodings=    " charset auto-sensing: disabled
-"set fileencoding&    " auto-sensed charset of current buffer
+" MyStatusLine() {{{
+function! MyStatusLine()
+	let statusline = ""
+	" Filename (F -> full, f -> relative)
+	let statusline .= "%f"
+	" Buffer flags
+	let statusline .= "%( %h%1*%m%*%r%w%) "
+	" File format and type
+	let statusline .= "(%{&ff}%(\/%Y%))"
+	" Left/right separator
+	let statusline .= "%="
+	" Line & column
+	let statusline .= "(%l,%c%V) "
+	" Character under cursor (decimal)
+	let statusline .= "%03.3b "
+	" Character under cursor (hexadecimal)
+	let statusline .= "0x%02.2B "
+	" File progress
+	let statusline .= "| %P/%L"
+	return statusline
+endfunction
+" }}}
 
-" to have 256 colors
-set t_Co=256
+" {{{ Sane Pasting
+function! SmartPaste()
+	setl paste
+	normal "+p
+	setl nopaste
+endfunction
+" }}}
 
-" for buftabs
-"noremap <f1> :bprev<CR>
-"noremap <f2> :bnext<CR>
-nnoremap <S-Right> :tabn<CR>
-nnoremap <S-Left> :tabp<CR>
-
-"" tags
-"set tags+=~/.vim/tags/cpp
-"set tags+=~/.vim/tags/gl
-"set tags+=~/.vim/tags/sdl
-"set tags+=~/.vim/tags/qt4
-"" build tags of your own project with Ctrl-F12
-"map <C-F12> :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
-
-" OmniCppComplete
-"let OmniCpp_NamespaceSearch = 1
-"let OmniCpp_GlobalScopeSearch = 1
-"let OmniCpp_ShowAccess = 1
-"let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-"let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-"let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-"let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-"let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
-"" automatically open and close the popup menu / preview window
-"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-"set completeopt=menuone,menu,longest,preview
-
-"-------------------------------------------------------------------------------
-"" autocomplete parenthesis, brackets and braces
-"-------------------------------------------------------------------------------
-"inoremap ( ()<Left>
-"inoremap [ []<Left>
-"inoremap { {}<Left>
-
-"vnoremap ( s()<Esc>P<Right>%
-"vnoremap [ s[]<Esc>P<Right>%
-"vnoremap { s{}<Esc>P<Right>%
-
-map ^T :w!<CR>:!aspell check %<CR>:e! %<CR>
-
-function! DateLastDay(day)
-	let day  = abs(a:day) % 7
-	let dir  = a:day < 0 ? -1 : 1
-	let sday = 60 * 60 * 24 * dir
-	let time = localtime() + sday
-	while strftime('%w', time) != day
-		let time += sday
-	endwh
-	return strftime('%c', time)
-endf
-
-" For PHP
-au BufRead,BufNewFile *.php set makeprg=php\ -a\ %
-let php_sql_query=1
-"let php_htmlInStrings=1
-let php_noShortTags=1
-let php_folding=1
-
-" Autocompletion kick ass
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_auto_select = 1
-
-" URL creation
-abbreviate xu <url:<Left>
-abbreviate xuh <url:/home/gsacre/<Left>
-
-" Abbreviations
-abbreviate I: Intel:
-abbreviate N: NOTE:
-abbreviate eoi [end-of-item]
-
-" Notes.vim
-"let g:notes_directory = '/home/gsacre/SpiderOak/notes'
+" {{{ Change the insert status line
+function! InsertStatuslineColor(mode)
+	if a:mode == 'i'
+		hi statusline guibg=#66d9ef
+	elseif a:mode == 'r'
+		hi statusline guibg=#ca94ff
+	else
+		hi statusline guibg=#ff6541
+	endif
+endfunction
+" }}}
+" }}}
