@@ -167,10 +167,20 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-commentary'
-Plug 'marcweber/vim-addon-mw-utils'
-Plug 'honza/vim-snippets'
 Plug 'kalafut/vim-taskjuggler'
+
+" {{{ SnipMate
 Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+Plug 'tomtom/tlib_vim'
+Plug 'marcweber/vim-addon-mw-utils'
+
+" Shows the snippet description in the popup menu
+let g:snipMate = {}
+let g:snipMate.description_in_completion = 1
+
+" }}}
+
 Plug 'dsummersl/wikia-csv'
 "Plug 'itchyny/lightline.vim'
 
