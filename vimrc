@@ -25,28 +25,35 @@ set showmatch
 set hlsearch
 set autochdir
 set wrap
-set cul
+
+" Let's set the LEADER
+let mapleader = ","
+
+" {{{ GUI specific options
+if has("gui_running")
+	set cul
+	" I don't want to have all the *bars
+	set guioptions-=T "toolbar
+	set guioptions-=m "menubar
+	set guioptions-=r "rulerbar
+
+	" Set the font if I can
+	set guifont=Consolas:h12
+
+	" To have an easier to read document
+	set linespace=8
+
+	" Initial window display
+	set lines=30
+	set columns=90
+endif
+" }}}
 
 " Displays the lines based on the current highlighted line.
 " Really useful to know how many lines to copy or delete from.
 set relativenumber
 "set foldmethod=indent
 "set viewoptions=folds,cursor
-
-" I don't want to have all the *bars
-set guioptions-=T "toolbar
-set guioptions-=m "menubar
-set guioptions-=r "rulerbar
-
-" Set the font if I can
-set guifont=Consolas:h12
-
-" To have an easier to read document
-set linespace=8
-
-" Initial window display
-set lines=30
-set columns=90
 
 " To get all the nice little characters displayed
 set fileencodings=utf-8
@@ -129,15 +136,13 @@ autocmd BufNewFile,BufRead *.tsv setlocal ts=20 sw=25
 " Change the status line based on the insert mode type
 au InsertEnter * call InsertStatuslineColor(v:insertmode)
 au InsertChange * call InsertStatuslineColor(v:insertmode)
-au InsertLeave * hi statusline guibg=#66747f
+au InsertLeave * hi statusline guibg=#66747f ctermbg=60
 " }}}
 
 " {{{ KEY MAPPINS
 noremap <F11> :call WrapAt()<Left>
 nnoremap <silent> <C-Tab> :bn<CR>
 nnoremap <silent> <C-s-Tab> :bp<CR>
-" To search and replace the word under the cursor
-nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 
 "Regular expression magic mode
 nnoremap / /\v
@@ -151,14 +156,20 @@ nnoremap :g// :g//
 nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
 
-" camelCase => camel_case
-vnoremap ,case :s/\v\C(([a-z]+)([A-Z]))/\2_\l\3/g<CR>
-
-" Session mappings
-nnoremap ,s :mksession! Session.vim<CR>
-
 " Sane pasting
 command! Paste call SmartPaste()
+
+" {{ LEADER based keymaps
+" Get the list of snippets for the current edited filetype
+nnoremap <Leader>sng :call SearchSnippets()<CR>
+" To search and replace the word under the cursor
+nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
+" camelCase => camel_case
+vnoremap <Leader>case :s/\v\C(([a-z]+)([A-Z]))/\2_\l\3/g<CR>
+" Session mappings
+nnoremap <Leader>mks :mksession! Session.vim<CR>
+"}}}
+
 " }}}
 
 " {{{ PLUGINS
@@ -215,7 +226,7 @@ call plug#end()
 
 " {{{ FUNCTIONS
 set diffexpr=MyDiff()
-function MyDiff()
+function! MyDiff()
 	let opt = '-a --binary '
 	if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
 	if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
@@ -292,12 +303,21 @@ endfunction
 " {{{ Change the insert status line
 function! InsertStatuslineColor(mode)
 	if a:mode == 'i'
-		hi statusline guibg=#66d9ef
+		hi statusline guibg=#66d9ef ctermbg=45
 	elseif a:mode == 'r'
-		hi statusline guibg=#ca94ff
+		hi statusline guibg=#ca94ff ctermbg=141
 	else
-		hi statusline guibg=#ff6541
+		hi statusline guibg=#ff6541 ctermbg=60
 	endif
 endfunction
 " }}}
+
+" {{{ Searches the available snippets for the given filetype
+function! SearchSnippets()
+	execute 'vimgrep /snippet/ C:\gVimPortable\Data\settings\.vim\plugged\vim-snippets\snippets\' . &ft . '.snippets'
+	bd
+	cw
+endfunction
+" }}}
+
 " }}}
