@@ -78,8 +78,12 @@ colorscheme lucario
 " }}}
 
 " {{{ VARIABLES
-let $MYVIMRC="~/_vimrc"
-let $SNIPPETS="C:/Users/gsa/Downloads/gVimPortable/Data/settings/.vim/plugged/vim-snippets/snippets"
+if filereadable("~/_vimrc")
+    let $MYVIMRC="~/_vimrc"
+else
+    let $MYVIMRC="~/.vimrc"
+endif
+let $SNIPPETS="$HOME/.vim/plugged/vim-snippets/snippets"
 " }}}
 
 " {{{ AUTOCOMMANDS
@@ -193,7 +197,6 @@ let g:snipMate.description_in_completion = 1
 " }}}
 
 Plug 'dsummersl/wikia-csv'
-"Plug 'itchyny/lightline.vim'
 
 " {{{ NERDTree
 "     ========
@@ -273,21 +276,19 @@ command! SClinicaConfDoc call SClinicaConfDoc()
 function! MyStatusLine()
 	let statusline = ""
 	" Filename (F -> full, f -> relative)
-	let statusline .= "%f"
+	let statusline .= "File: %f"
+	" Buffer number
+	let statusline .= " | Buf #: %n"
 	" Buffer flags
-	let statusline .= "%( %h%1*%m%*%r%w%) "
+	let statusline .= " | Buf flag: %(%h%1*%m%*%r%w%)"
 	" File format and type
-	let statusline .= "(%{&ff}%(\/%Y%))"
+	let statusline .= " | Format: %{&ff}%(\/%Y%)"
 	" Left/right separator
 	let statusline .= "%="
 	" Line & column
-	let statusline .= "(%l,%c%V) "
-	" Character under cursor (decimal)
-	let statusline .= "%03.3b "
-	" Character under cursor (hexadecimal)
-	let statusline .= "0x%02.2B "
+	let statusline .= " | Line: %l | Col: %c%V"
 	" File progress
-	let statusline .= "| %P/%L"
+	let statusline .= " | %P/%L"
 	return statusline
 endfunction
 " }}}
@@ -314,7 +315,7 @@ endfunction
 
 " {{{ Searches the available snippets for the given filetype
 function! SearchSnippets()
-	execute 'vimgrep /snippet/ C:\gVimPortable\Data\settings\.vim\plugged\vim-snippets\snippets\' . &ft . '.snippets'
+	execute 'vimgrep /snippet/ $HOME\.vim\plugged\vim-snippets\snippets\' . &ft . '.snippets'
 	bd
 	cw
 endfunction
