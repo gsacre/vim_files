@@ -71,9 +71,13 @@ set splitright
 set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
 
 " Status line
-set statusline=%!MyStatusLine()
+" set statusline=%!MyStatusLine()
 
-colorscheme lucario
+if has('gui_running')
+	colorscheme lucario
+else
+	colorscheme monokai
+endif
 
 " }}}
 
