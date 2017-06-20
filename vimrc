@@ -78,10 +78,10 @@ colorscheme lucario
 " }}}
 
 " {{{ VARIABLES
-if filereadable("~/_vimrc")
-    let $MYVIMRC="~/_vimrc"
+if filereadable($HOME . "/_vimrc")
+    let $MYVIMRC="$HOME/_vimrc"
 else
-    let $MYVIMRC="~/.vimrc"
+    let $MYVIMRC="$HOME/.vimrc"
 endif
 let $SNIPPETS="$HOME/.vim/plugged/vim-snippets/snippets"
 " }}}
@@ -197,6 +197,17 @@ let g:snipMate.description_in_completion = 1
 " }}}
 
 Plug 'dsummersl/wikia-csv'
+
+" {{{ lightline
+Plug 'itchyny/lightline.vim'
+" Don't forget to export TERM=xterm-256color in your shell
+if !has('gui_running')
+  set t_Co=256
+endif
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+" }}}
 
 " {{{ NERDTree
 "     ========
