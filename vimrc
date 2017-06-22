@@ -202,6 +202,21 @@ let g:snipMate.description_in_completion = 1
 
 Plug 'dsummersl/wikia-csv'
 
+" {{{ CTRL-P
+if hostname() == "SYLVIE-PC"
+	Plug 'ctrlpvim/ctrlp.vim'
+	let g:ctrlp_cmd = 'CtrlP C:\Users\Sylvie\dev\qmsforall'
+	let g:ctrlp_match_window = 'top,order:btt,min:1,max:10,results:10'
+
+	" Ignore some un-needed files for laravel projects
+	let g:ctrlp_custom_ignore = {
+				\ 'dir':  '\v[\/](storage|public|vendor)$',
+				\ 'file': '\v\.(lock|so|dll|lock)$|artisan',
+				\ 'link': 'some_bad_symbolic_links',
+				\ }
+	" }}}
+endif
+
 " {{{ lightline
 Plug 'itchyny/lightline.vim'
 " Don't forget to export TERM=xterm-256color in your shell
