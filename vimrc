@@ -184,6 +184,11 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-commentary'
 Plug 'kalafut/vim-taskjuggler'
 
+" {{ Goyo: distraction free markdown plugin
+Plug 'junegunn/goyo.vim'
+" }}
+
+Plug 'sotte/presenting.vim'
 " {{{ SnipMate
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
@@ -206,8 +211,13 @@ if !has('gui_running')
 endif
 let g:lightline = {
       \ 'colorscheme': 'wombat',
-      \ }
+	  \ }
 " }}}
+
+Plug 'mgee/lightline-bufferline'
+let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
 
 " {{{ NERDTree
 "     ========
