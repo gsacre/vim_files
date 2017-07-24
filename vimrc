@@ -207,10 +207,14 @@ let g:snipMate.description_in_completion = 1
 
 Plug 'dsummersl/wikia-csv'
 
+if hostname() == "SYLVIE-PC" || hostname() == "aragorn"
 " {{{ CTRL-P
-if hostname() == "SYLVIE-PC"
 	Plug 'ctrlpvim/ctrlp.vim'
-	let g:ctrlp_cmd = 'CtrlP C:\Users\Sylvie\dev\qmsforall'
+	if hostname() == "SYLVIE-PC"
+		let g:ctrlp_cmd = 'CtrlP C:\Users\Sylvie\dev\qmsforall'
+	else
+		let g:ctrlp_cmd = 'CtrlP /home/gsacre/dev/qmsforall'
+	endif
 	let g:ctrlp_match_window = 'top,order:btt,min:1,max:10,results:10'
 
 	" Ignore some un-needed files for laravel projects
@@ -219,7 +223,7 @@ if hostname() == "SYLVIE-PC"
 				\ 'file': '\v\.(lock|so|dll|lock)$|artisan',
 				\ 'link': 'some_bad_symbolic_links',
 				\ }
-	" }}}
+" }}}
 endif
 
 " {{{ lightline
