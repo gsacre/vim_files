@@ -176,6 +176,8 @@ nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 vnoremap <Leader>case :s/\v\C(([a-z]+)([A-Z]))/\2_\l\3/g<CR>
 " Session mappings
 nnoremap <Leader>mks :mksession! Session.vim<CR>
+" Run a shell
+nnoremap <Leader>S :shell<CR>
 "}}}
 
 " }}}
