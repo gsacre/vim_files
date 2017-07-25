@@ -363,4 +363,12 @@ function! SearchSnippets()
 endfunction
 " }}}
 
+function! s:ExecuteInShell(command)
+	let command = join(map(split(a:command), 'expand(v:val)'))
+	let winnr = bufwinnr('^' . command . '$')
+	echo 'Execute ' . command . '...'
+	silent! exe "set splitright | vnew | r! " . command
+endfunction
+"command! Shell set splitright | vnew | r!
+command! -complete=shellcmd -nargs=+ Shell call s:ExecuteInShell(<q-args>)
 " }}}
