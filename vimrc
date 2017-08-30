@@ -38,7 +38,9 @@ if has("gui_running")
 	set guioptions-=r "rulerbar
 
 	" Set the font if I can
-	set guifont=Consolas:h12
+	if hostname() != "aragorn"
+		set guifont=Consolas:h12
+	endif
 
 	" To have an easier to read document
 	set linespace=8
@@ -222,7 +224,7 @@ if hostname() == "SYLVIE-PC" || hostname() == "aragorn"
 
 	" Ignore some un-needed files for laravel projects
 	let g:ctrlp_custom_ignore = {
-				\ 'dir':  '\v[\/](storage|public|vendor)$',
+				\ 'dir':  '\v[\/](storage|public|vendor|node_modules)$',
 				\ 'file': '\v\.(lock|so|dll|lock)$|artisan',
 				\ 'link': 'some_bad_symbolic_links',
 				\ }
