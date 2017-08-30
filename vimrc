@@ -11,8 +11,8 @@ set viewdir=~/.vim/view/
 set history=500
 set showcmd
 set incsearch
-set tabstop=8
-set shiftwidth=8
+set tabstop=4
+set shiftwidth=4
 "set foldcolumn=2
 set ruler
 set cindent
@@ -180,6 +180,9 @@ vnoremap <Leader>case :s/\v\C(([a-z]+)([A-Z]))/\2_\l\3/g<CR>
 nnoremap <Leader>mks :mksession! Session.vim<CR>
 " Run a shell
 nnoremap <Leader>S :shell<CR>
+" Snipmate
+imap <C-Space> <Plug>snipMateNextOrTrigger
+smap <C-Space> <Plug>snipMateNextOrTrigger
 "}}}
 
 " }}}
@@ -271,6 +274,16 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 " hide dotfiles by default (this is the string toggled by netrw-gh)
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 " }}}
+
+" {{ VIMWIKI
+if hostname() == "WK-DVB10"
+	Plug 'vimwiki/vimwiki'
+endif
+" }}
+
+" {{ Mini buffer explorer
+Plug 'fholgado/minibufexpl.vim'
+" }}
 
 call plug#end()
 " }}}
