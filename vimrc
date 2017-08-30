@@ -11,8 +11,8 @@ set viewdir=~/.vim/view/
 set history=500
 set showcmd
 set incsearch
-set tabstop=8
-set shiftwidth=8
+set tabstop=4
+set shiftwidth=4
 "set foldcolumn=2
 set ruler
 set cindent
@@ -52,8 +52,8 @@ endif
 " Displays the lines based on the current highlighted line.
 " Really useful to know how many lines to copy or delete from.
 set relativenumber
-"set foldmethod=indent
-"set viewoptions=folds,cursor
+set foldmethod=indent
+set viewoptions=folds,cursor
 
 " To get all the nice little characters displayed
 set fileencodings=utf-8
@@ -106,6 +106,7 @@ autocmd FileType perl so $HOME/.vim/abb/perl.vim
 "autocmd FileType c so $HOME/.vim/abb/c.vim
 autocmd FileType python set textwidth=0
 autocmd FileType python set formatoptions=
+autocmd FileType python so $HOME/.vim/abb/python.vim
 
 " We save and load the fold views
 au BufWinEnter,BufRead,BufNew,BufNewFile mutt-* set textwidth=72
